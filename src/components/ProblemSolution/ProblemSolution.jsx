@@ -7,44 +7,39 @@ const problems = [
   {
     icon: AlertCircle,
     title: "Métodos Tradicionales Ineficaces",
-    description:
-      "Años estudiando inglés sin poder mantener una conversación real.",
+    description: "Años estudiando inglés sin poder mantener una conversación real."
   },
   {
     icon: AlertCircle,
     title: "Falta de Práctica Real",
-    description:
-      "Gramática perfecta pero incapacidad para comunicarse en situaciones cotidianas.",
+    description: "Gramática perfecta pero incapacidad para comunicarse en situaciones cotidianas."
   },
   {
     icon: AlertCircle,
     title: "Miedo a Hablar",
-    description: "Inseguridad y vergüenza al intentar expresarte en inglés.",
-  },
+    description: "Inseguridad y vergüenza al intentar expresarte en inglés."
+  }
 ];
 
 const solutions = [
   {
     icon: CheckCircle2,
     title: "Método Conversacional 100%",
-    description:
-      "Desde la primera clase hablas inglés real con profesores nativos.",
-    color: "#D4B77D",
+    description: "Desde la primera clase hablas inglés real con profesores nativos.",
+    color: "#D4B77D"
   },
   {
     icon: CheckCircle2,
     title: "Práctica Inmersiva Diaria",
-    description:
-      "Situaciones reales del día a día para que ganes confianza al hablar.",
-    color: "#D4B77D",
+    description: "Situaciones reales del día a día para que ganes confianza al hablar.",
+    color: "#D4B77D"
   },
   {
     icon: CheckCircle2,
     title: "Resultados en 3 Meses",
-    description:
-      "Progreso medible: de no poder hablar a mantener conversaciones fluidas.",
-    color: "#D4B77D",
-  },
+    description: "Progreso medible: de no poder hablar a mantener conversaciones fluidas.",
+    color: "#D4B77D"
+  }
 ];
 
 const containerVariants = {
@@ -86,7 +81,7 @@ const SolutionCard = ({ icon: Icon, title, description, color }) => {
   return (
     <div className="bg-emerald-950/30 border-2 border-emerald-800/60 rounded-2xl p-6 backdrop-blur-md hover:border-emerald-700/80 hover:bg-emerald-950/40 hover:shadow-2xl hover:shadow-emerald-900/30 transition-all duration-300 shadow-xl">
       <div className="flex items-start gap-4">
-        <div
+        <div 
           className="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center"
           style={{ backgroundColor: `${color}40` }}
         >
@@ -105,31 +100,26 @@ const ProblemSolutionSection = () => {
   const sectionRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ["start end", "end start"],
+    offset: ["start end", "end start"]
   });
 
-  // Parallax effect: moves slower than scroll
   const y = useTransform(scrollYProgress, [0, 1], [0, -100]);
-  const opacity = useTransform(
-    scrollYProgress,
-    [0, 0.3, 0.7, 1],
-    [0.6, 1, 1, 0.6]
-  );
+  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.6, 1, 1, 0.6]);
   const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1.1, 1, 1.1]);
 
   return (
     <div className="relative" ref={sectionRef}>
       {/* Angled Top Divider */}
-      <div
-        className="absolute top-0 w-full overflow-hidden z-20"
-        style={{ height: 100 }}
-      >
+      <div className="absolute top-0 w-full overflow-hidden z-20" style={{ height: 100 }}>
         <svg
           className="w-full h-full"
           viewBox="0 0 1440 100"
           preserveAspectRatio="none"
         >
-          <path fill="#0A1A2F" d="M0,0 L1440,0 L1440,80 L0,100 Z" />
+          <path
+            fill="#0A1A2F"
+            d="M0,0 L1440,0 L1440,80 L0,100 Z"
+          />
         </svg>
       </div>
 
@@ -138,27 +128,26 @@ const ProblemSolutionSection = () => {
         style={{ paddingTop: "140px" }}
       >
         {/* Parallax Background Image */}
-        <motion.div
+        <motion.div 
           className="absolute inset-0 w-full h-full"
-          style={{
+          style={{ 
             y,
             scale,
-            opacity,
+            opacity
           }}
         >
-          <div
-            className="absolute inset-0 w-full h-full bg-cover bg-center"
-            style={{
-              backgroundImage: `url(${englishBg})`,
-              backgroundAttachment: "fixed",
-            }}
+          <motion.img
+            src={englishBg}
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover pointer-events-none select-none"
+            style={{ zIndex: 1 }}
           />
           {/* Dark overlay for better text readability */}
-          <div
+          <div 
             className="absolute inset-0 w-full h-full"
             style={{
-              background:
-                "linear-gradient(135deg, rgba(30, 26, 68, 0.92) 0%, rgba(10, 26, 47, 0.88) 50%, rgba(30, 26, 68, 0.92) 100%)",
+              background: "linear-gradient(135deg, rgba(30, 26, 68, 0.92) 0%, rgba(10, 26, 47, 0.88) 50%, rgba(30, 26, 68, 0.92) 100%)",
+              zIndex: 2
             }}
           />
         </motion.div>
@@ -168,25 +157,25 @@ const ProblemSolutionSection = () => {
           className="absolute top-20 left-10 w-72 h-72 bg-red-900/10 rounded-full blur-3xl"
           animate={{
             scale: [1, 1.2, 1],
-            opacity: [0.1, 0.2, 0.1],
+            opacity: [0.1, 0.2, 0.1]
           }}
           transition={{
             duration: 8,
             repeat: Infinity,
-            ease: "easeInOut",
+            ease: "easeInOut"
           }}
         />
         <motion.div
           className="absolute bottom-20 right-10 w-96 h-96 bg-emerald-900/10 rounded-full blur-3xl"
           animate={{
             scale: [1, 1.3, 1],
-            opacity: [0.1, 0.2, 0.1],
+            opacity: [0.1, 0.2, 0.1]
           }}
           transition={{
             duration: 10,
             repeat: Infinity,
             ease: "easeInOut",
-            delay: 1,
+            delay: 1
           }}
         />
 
@@ -254,18 +243,12 @@ const ProblemSolutionSection = () => {
                 <div
                   className="inline-flex items-center gap-3 px-6 py-3 rounded-full border mb-6 backdrop-blur-sm"
                   style={{
-                    backgroundColor: "rgba(212, 183, 125, 0.15)",
-                    borderColor: "rgba(212, 183, 125, 0.4)",
+                    backgroundColor: 'rgba(212, 183, 125, 0.15)',
+                    borderColor: 'rgba(212, 183, 125, 0.4)'
                   }}
                 >
-                  <TrendingUp
-                    className="w-5 h-5"
-                    style={{ color: "#D4B77D" }}
-                  />
-                  <span
-                    className="font-semibold text-lg"
-                    style={{ color: "#D4B77D" }}
-                  >
+                  <TrendingUp className="w-5 h-5" style={{ color: "#D4B77D" }} />
+                  <span className="font-semibold text-lg" style={{ color: "#D4B77D" }}>
                     La Solución
                   </span>
                 </div>
@@ -293,20 +276,14 @@ const ProblemSolutionSection = () => {
                 <div
                   className="inline-block px-8 py-4 rounded-2xl border-2 backdrop-blur-sm"
                   style={{
-                    backgroundColor: "rgba(212, 183, 125, 0.15)",
-                    borderColor: "#D4B77D",
+                    backgroundColor: 'rgba(212, 183, 125, 0.15)',
+                    borderColor: '#D4B77D'
                   }}
                 >
-                  <p
-                    className="text-lg font-bold mb-1"
-                    style={{ color: "#D4B77D" }}
-                  >
+                  <p className="text-lg font-bold mb-1" style={{ color: "#D4B77D" }}>
                     ✨ Garantía de Resultados
                   </p>
-                  <p
-                    className="text-sm"
-                    style={{ color: "rgba(245, 247, 250, 0.9)" }}
-                  >
+                  <p className="text-sm" style={{ color: "rgba(245, 247, 250, 0.9)" }}>
                     O te devolvemos tu inversión
                   </p>
                 </div>
@@ -323,10 +300,7 @@ const ProblemSolutionSection = () => {
             className="grid sm:grid-cols-3 gap-8 mt-20 text-center"
           >
             <div className="backdrop-blur-sm bg-white/5 rounded-2xl p-6">
-              <p
-                className="text-4xl md:text-5xl font-bold mb-2"
-                style={{ color: "#D4B77D" }}
-              >
+              <p className="text-4xl md:text-5xl font-bold mb-2" style={{ color: "#D4B77D" }}>
                 87%
               </p>
               <p className="text-gray-200">
@@ -334,10 +308,7 @@ const ProblemSolutionSection = () => {
               </p>
             </div>
             <div className="backdrop-blur-sm bg-white/5 rounded-2xl p-6">
-              <p
-                className="text-4xl md:text-5xl font-bold mb-2"
-                style={{ color: "#D4B77D" }}
-              >
+              <p className="text-4xl md:text-5xl font-bold mb-2" style={{ color: "#D4B77D" }}>
                 +500
               </p>
               <p className="text-gray-200">
@@ -345,13 +316,12 @@ const ProblemSolutionSection = () => {
               </p>
             </div>
             <div className="backdrop-blur-sm bg-white/5 rounded-2xl p-6">
-              <p
-                className="text-4xl md:text-5xl font-bold mb-2"
-                style={{ color: "#D4B77D" }}
-              >
+              <p className="text-4xl md:text-5xl font-bold mb-2" style={{ color: "#D4B77D" }}>
                 100%
               </p>
-              <p className="text-gray-200">Profesores nativos certificados</p>
+              <p className="text-gray-200">
+                Profesores nativos certificados
+              </p>
             </div>
           </motion.div>
         </div>
