@@ -214,7 +214,23 @@ const PricingSection = () => {
             </motion.p>
           </motion.div>
         </div>
+        
       </div>
+      <motion.div
+  className="absolute bottom-0 w-full overflow-hidden z-20"
+  style={{ height: 100 }}
+>
+  <svg
+    className="w-full h-full"
+    viewBox="0 0 1440 320"
+    preserveAspectRatio="none"
+  >
+    <path
+      fill="#F3F6F9"
+      d="M0,224 L90,160 L180,224 L270,128 L360,224 L450,176 L540,224 L630,144 L720,224 L810,160 L900,224 L990,128 L1080,224 L1170,176 L1260,224 L1350,160 L1440,224 L1440,320 L0,320 Z"
+    />
+  </svg>
+</motion.div>
     </section>
   );
 };

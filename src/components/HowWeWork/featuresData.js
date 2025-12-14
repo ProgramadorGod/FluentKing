@@ -11,13 +11,13 @@ export const features = [
   },
   {
     iconName: "Calendar",
-    title: "Programa de 9 Meses",
+    title: "Programa de 10 Meses",
     description: "Estructura clara con objetivos medibles"
   },
   {
     iconName: "Award",
-    title: "Certificación",
-    description: "Reconocimiento oficial al completar el programa"
+    title: "Certificación Internacional",
+    description: "Certificado Cambridge al completar el curso"
   },
   {
     iconName: "Briefcase",

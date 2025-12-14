@@ -1,14 +1,24 @@
-import React, { useState, useRef } from "react";
-import { ChevronLeft, ChevronRight, Star, Quote } from "lucide-react";
+import React, { useState, useRef, useEffect } from "react";
+import { ChevronLeft, ChevronRight, Star, Quote, Volume2, Pause } from "lucide-react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 
 const TestimonialsSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const audioRef = useRef(null);
   
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const testimonials = [
+    {
+      name: "Antonieta",
+      role: "Madre de Familia",
+      text: "Me emocioné tanto aprendiendo inglés que ahora le enseño a mi hija. Ver su progreso y el mío juntas ha sido una experiencia maravillosa.",
+      rating: 5,
+      image: "AN",
+      audio: "/src/resources/anto.ogg"
+    },
     {
       name: "Carlos Rodríguez",
       role: "Ingeniero de Software",
@@ -39,8 +49,42 @@ const TestimonialsSection = () => {
     }
   ];
 
-  const next = () => setCurrentIndex((prev) => (prev + 1) % testimonials.length);
-  const prev = () => setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+  const handleAudioToggle = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+        setIsPlaying(false);
+      } else {
+        audioRef.current.play();
+        setIsPlaying(true);
+      }
+    }
+  };
+
+  const next = () => {
+    setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+    if (audioRef.current) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    }
+  };
+  
+  const prev = () => {
+    setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+    if (audioRef.current) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    }
+  };
+
+  // Reset audio when testimonial changes
+  useEffect(() => {
+    setIsPlaying(false);
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+  }, [currentIndex]);
 
   return (
     <section 
@@ -105,7 +149,7 @@ const TestimonialsSection = () => {
 
         <div className="max-w-3xl mx-auto">
           {/* Container with fixed height */}
-          <div className="relative" style={{ minHeight: "420px" }}>
+          <div className="relative" style={{ minHeight: "480px" }}>
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentIndex}
@@ -197,12 +241,104 @@ const TestimonialsSection = () => {
                     ))}
                   </motion.div>
 
+                  {/* Audio player if available */}
+                  {testimonials[currentIndex].audio && (
+                    <motion.div
+                      className="flex justify-center mb-6"
+                      initial={{ opacity: 0, scale: 0.8, y: -10 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: 0.3 }}
+                    >
+                      <audio
+                        ref={audioRef}
+                        src={testimonials[currentIndex].audio}
+                        onEnded={() => setIsPlaying(false)}
+                      />
+                      <motion.button
+                        onClick={handleAudioToggle}
+                        className="relative flex items-center gap-3 px-6 py-3 rounded-full font-semibold transition-all shadow-lg overflow-hidden"
+                        style={{
+                          background: isPlaying 
+                            ? "linear-gradient(135deg, #1D4E89 0%, #0D2847 100%)"
+                            : "linear-gradient(135deg, #D4B77D 0%, #B8965F 100%)",
+                          color: "#FFFFFF",
+                          border: "2px solid rgba(255, 255, 255, 0.2)"
+                        }}
+                        whileHover={{ 
+                          scale: 1.05,
+                          boxShadow: "0 8px 20px rgba(212, 183, 125, 0.4)"
+                        }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        {/* Animated background pulse when playing */}
+                        {isPlaying && (
+                          <motion.div
+                            className="absolute inset-0"
+                            style={{
+                              background: "radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%)"
+                            }}
+                            animate={{
+                              scale: [1, 1.5, 1],
+                              opacity: [0.5, 0, 0.5]
+                            }}
+                            transition={{
+                              duration: 2,
+                              repeat: Infinity,
+                              ease: "easeInOut"
+                            }}
+                          />
+                        )}
+                        
+                        <motion.div
+                          animate={isPlaying ? { scale: [1, 1.2, 1] } : {}}
+                          transition={{
+                            duration: 0.6,
+                            repeat: isPlaying ? Infinity : 0,
+                            ease: "easeInOut"
+                          }}
+                        >
+                          {isPlaying ? (
+                            <Pause className="w-5 h-5" fill="currentColor" />
+                          ) : (
+                            <Volume2 className="w-5 h-5" />
+                          )}
+                        </motion.div>
+                        
+                        <span className="text-sm md:text-base relative z-10">
+                          {isPlaying ? "Pausar Audio" : "Escuchar Testimonio"}
+                        </span>
+
+                        {/* Sound waves animation when playing */}
+                        {isPlaying && (
+                          <div className="flex gap-1 items-center ml-1">
+                            {[0, 1, 2].map((i) => (
+                              <motion.div
+                                key={i}
+                                className="w-1 bg-white rounded-full"
+                                style={{ height: "12px" }}
+                                animate={{
+                                  height: ["12px", "20px", "12px"]
+                                }}
+                                transition={{
+                                  duration: 0.8,
+                                  repeat: Infinity,
+                                  delay: i * 0.15,
+                                  ease: "easeInOut"
+                                }}
+                              />
+                            ))}
+                          </div>
+                        )}
+                      </motion.button>
+                    </motion.div>
+                  )}
+
                   {/* Testimonial text - flex-grow to push content down */}
                   <motion.div
                     className="relative mb-4 md:mb-6 flex-grow flex items-center"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.3 }}
+                    transition={{ duration: 0.6, delay: 0.4 }}
                   >
                     <p 
                       className="text-base md:text-lg text-center leading-relaxed italic relative z-10 px-2"
@@ -217,7 +353,7 @@ const TestimonialsSection = () => {
                     className="text-center"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.4 }}
+                    transition={{ duration: 0.6, delay: 0.5 }}
                   >
                     <p 
                       className="text-lg md:text-xl font-bold mb-1"
@@ -301,6 +437,7 @@ const TestimonialsSection = () => {
           </div>
         </div>
       </div>
+   
     </section>
   );
 };

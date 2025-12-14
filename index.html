@@ -1,13 +1,122 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>my-project</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<html lang="es" prefix="og: https://ogp.me/ns#">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Performance: DNS Prefetch & Preconnect -->
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+  <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- Favicon -->
+  <link rel="icon" href="/src/resources/Logo-T.png" type="image/jpeg" />
+
+  <!-- SEO: Title & Meta -->
+  <title>Change Your Life Forever - English Academy</title>
+  <meta name="description" content="Clases de inglés online con profesores nativos. Programa personalizado, clases ilimitadas y preparación TOEFL/IELTS. Aprende inglés más rápido con CYL4Ever." />
+  <meta name="robots" content="index, follow" />
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https://cyl4ever.com/" />
+
+  <!-- i18n -->
+  <link rel="alternate" hreflang="es" href="https://cyl4ever.com/" />
+  <link rel="alternate" hreflang="en" href="https://cyl4ever.com/en/" />
+  <link rel="alternate" hreflang="pt" href="https://cyl4ever.com/pt/" />
+  <link rel="alternate" hreflang="x-default" href="https://cyl4ever.com/" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="CYL4Ever - Aprende Inglés con Profesores Nativos" />
+  <meta property="og:description" content="Clases personalizadas, método conversacional y certificaciones internacionales TOEFL/IELTS." />
+  <meta property="og:url" content="https://cyl4ever.com/" />
+  <meta property="og:image" content="https://cyl4ever.com/src/resources/Logo-T.png" />
+  <meta property="og:site_name" content="Change Your Life Forever - English Academy" />
+  <meta property="og:locale" content="es_ES" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Change Your Life Forever - English Academy" />
+  <meta name="twitter:description" content="Clases personalizadas con profesores nativos. Aprende inglés más rápido y con confianza." />
+  <meta name="twitter:image" content="https://cyl4ever.com/src/resources/Logo-T.png" />
+
+  <!-- Theme -->
+  <meta name="theme-color" content="#2563eb" />
+
+  <!-- Preload -->
+  <link rel="preload" href="/src/resources/Logo-T.png" as="image" />
+
+  <!-- JSON-LD Limpio y Validado -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "EducationalOrganization",
+    "name": "Change Your Life Forever - English Academy",
+    "url": "https://cyl4ever.com",
+    "logo": "https://cyl4ever.com/src/resources/Logo-T.png",
+    "description": "Clases de inglés online con profesores nativos y currículo personalizado.",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Bogotá",
+      "addressRegion": "Cundinamarca",
+      "addressCountry": "CO"
+    },
+    "sameAs": [
+      "https://www.facebook.com/cyl4ever",
+      "https://www.instagram.com/cyl4ever",
+      "https://www.youtube.com/@cyl4ever"
+    ]
+  }
+  </script>
+
+  <!-- FAQ Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "¿Cuánto tiempo toma aprender inglés?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Nuestros estudiantes logran nivel conversacional en 6–12 meses con nuestro programa personalizado." }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Las clases son con profesores nativos?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Sí. Todos los profesores son nativos certificados internacionalmente." }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Preparan para exámenes internacionales?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Sí. TOEFL, IELTS y Cambridge." }
+      }
+    ]
+  }
+  </script>
+
+  <!-- Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+
+  <noscript>
+    <div style="text-align:center; padding:40px;">
+      <img src="/src/resources/Logo-T.png" alt="Change Your Life Forever - English Academy Logo" style="width:120px; border-radius:50%;" />
+      <h1>Change Your Life Forever - English Academy</h1>
+      <p>Become the best version of yourself</p>
+    </div>
+  </noscript>
+</body>
 </html>
