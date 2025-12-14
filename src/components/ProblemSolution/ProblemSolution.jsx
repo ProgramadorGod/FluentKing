@@ -1,6 +1,6 @@
-import React, { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { AlertCircle, CheckCircle2, TrendingUp } from "lucide-react";
+import { useRef } from "react";
+import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import { AlertCircle, CheckCircle2, X, Sparkles } from "lucide-react";
 import englishBg from "../../resources/english.jpg";
 
 const problems = [
@@ -42,57 +42,253 @@ const solutions = [
   }
 ];
 
-const containerVariants = {
-  hidden: {},
-  show: {
-    transition: {
-      staggerChildren: 0.2,
-    },
-  },
-};
+const ProblemCard = ({ icon: Icon, title, description, index }) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
 
-const itemVariants = {
-  hidden: { opacity: 0, x: -50 },
-  show: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut" } },
-};
-
-const solutionVariants = {
-  hidden: { opacity: 0, x: 50 },
-  show: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut" } },
-};
-
-const ProblemCard = ({ icon: Icon, title, description }) => {
   return (
-    <div className="bg-red-950/30 border-2 border-red-800/60 rounded-2xl p-6 backdrop-blur-md hover:border-red-700/80 hover:bg-red-950/40 transition-all duration-300 shadow-xl">
-      <div className="flex items-start gap-4">
-        <div className="flex-shrink-0 w-12 h-12 bg-red-900/40 rounded-xl flex items-center justify-center">
-          <Icon className="w-6 h-6 text-red-400" />
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, x: -60, scale: 0.9 }}
+      animate={isInView ? { opacity: 1, x: 0, scale: 1 } : {}}
+      transition={{
+        duration: 0.7,
+        delay: index * 0.15,
+        type: "spring",
+        stiffness: 100
+      }}
+      whileHover={{ x: -8, scale: 1.02 }}
+      className="relative group cursor-pointer"
+    >
+      <div
+        className="relative p-6 md:p-8 rounded-2xl overflow-hidden backdrop-blur-md transition-all duration-400 shadow-xl"
+        style={{
+          background: "linear-gradient(135deg, rgba(127, 29, 29, 0.25) 0%, rgba(153, 27, 27, 0.2) 100%)",
+          border: "2px solid rgba(239, 68, 68, 0.4)",
+          boxShadow: "0 10px 40px rgba(239, 68, 68, 0.15)"
+        }}
+      >
+        {/* X icon in top right corner */}
+        <motion.div
+          className="absolute -top-2 -right-2 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center shadow-lg"
+          style={{
+            background: "linear-gradient(135deg, #EF4444 0%, #DC2626 100%)",
+            border: "3px solid rgba(255, 255, 255, 0.9)"
+          }}
+          initial={{ scale: 0, rotate: -180 }}
+          animate={isInView ? { scale: 1, rotate: 0 } : {}}
+          transition={{
+            duration: 0.6,
+            delay: 0.2 + index * 0.15,
+            type: "spring",
+            bounce: 0.6
+          }}
+          whileHover={{ rotate: 180, scale: 1.2 }}
+        >
+          <X className="w-5 h-5 md:w-6 md:h-6 text-white" strokeWidth={3} />
+        </motion.div>
+
+        {/* Corner decoration */}
+        <motion.div
+          className="absolute top-0 left-0 w-20 h-20 opacity-20"
+          style={{
+            background: "radial-gradient(circle at top left, rgba(239, 68, 68, 0.4) 0%, transparent 70%)"
+          }}
+          initial={{ opacity: 0, scale: 0 }}
+          animate={isInView ? { opacity: 0.2, scale: 1 } : {}}
+          transition={{ duration: 1, delay: 0.3 + index * 0.15 }}
+        />
+
+        {/* Animated gradient overlay on hover */}
+        <motion.div
+          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+          style={{
+            background: "radial-gradient(circle at 50% 50%, rgba(239, 68, 68, 0.15) 0%, transparent 70%)"
+          }}
+        />
+
+        <div className="flex items-start gap-4 relative z-10">
+          {/* Icon container with glow */}
+          <motion.div
+            className="flex-shrink-0 w-14 h-14 md:w-16 md:h-16 rounded-xl flex items-center justify-center relative"
+            style={{
+              background: "rgba(239, 68, 68, 0.2)",
+              border: "2px solid rgba(239, 68, 68, 0.5)"
+            }}
+            whileHover={{
+              rotate: [0, -8, 8, -8, 8, 0],
+              scale: 1.1,
+              borderColor: "#EF4444"
+            }}
+            transition={{ duration: 0.6 }}
+          >
+            {/* Icon glow effect */}
+            <motion.div
+              className="absolute inset-0 rounded-xl"
+              style={{
+                background: "rgba(239, 68, 68, 0.3)",
+                filter: "blur(8px)"
+              }}
+              animate={{
+                scale: [1, 1.3, 1],
+                opacity: [0.3, 0.6, 0.3]
+              }}
+              transition={{
+                duration: 2.5,
+                repeat: Infinity,
+                delay: index * 0.3
+              }}
+            />
+            <Icon className="w-7 h-7 md:w-8 md:h-8 text-red-400 relative z-10" />
+          </motion.div>
+
+          <div className="flex-1">
+            <h3 className="text-lg md:text-xl font-bold mb-2" style={{ color: "#FCA5A5" }}>
+              {title}
+            </h3>
+            <p className="leading-relaxed" style={{ color: "rgba(245, 247, 250, 0.85)" }}>
+              {description}
+            </p>
+          </div>
         </div>
-        <div>
-          <h3 className="text-xl font-bold text-red-300 mb-2">{title}</h3>
-          <p className="text-gray-200 leading-relaxed">{description}</p>
-        </div>
+
+        {/* Animated bottom accent */}
+        <motion.div
+          className="absolute bottom-0 left-0 right-0 h-1 rounded-b-2xl"
+          style={{
+            background: "linear-gradient(90deg, transparent 0%, #EF4444 50%, transparent 100%)"
+          }}
+          initial={{ scaleX: 0, opacity: 0 }}
+          animate={isInView ? { scaleX: 1, opacity: 1 } : {}}
+          transition={{ duration: 0.6, delay: 0.5 + index * 0.1 }}
+        />
       </div>
-    </div>
+    </motion.div>
   );
 };
 
-const SolutionCard = ({ icon: Icon, title, description, color }) => {
+const SolutionCard = ({ icon: Icon, title, description, color, index }) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
+
   return (
-    <div className="bg-emerald-950/30 border-2 border-emerald-800/60 rounded-2xl p-6 backdrop-blur-md hover:border-emerald-700/80 hover:bg-emerald-950/40 hover:shadow-2xl hover:shadow-emerald-900/30 transition-all duration-300 shadow-xl">
-      <div className="flex items-start gap-4">
-        <div 
-          className="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center"
-          style={{ backgroundColor: `${color}40` }}
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, x: 60, scale: 0.9 }}
+      animate={isInView ? { opacity: 1, x: 0, scale: 1 } : {}}
+      transition={{
+        duration: 0.7,
+        delay: index * 0.15,
+        type: "spring",
+        stiffness: 100
+      }}
+      whileHover={{ x: 8, scale: 1.02 }}
+      className="relative group cursor-pointer"
+    >
+      <div
+        className="relative p-6 md:p-8 rounded-2xl overflow-hidden backdrop-blur-md transition-all duration-400 shadow-xl"
+        style={{
+          background: "linear-gradient(135deg, rgba(212, 183, 125, 0.15) 0%, rgba(184, 150, 95, 0.1) 100%)",
+          border: "2px solid rgba(212, 183, 125, 0.5)",
+          boxShadow: "0 10px 40px rgba(212, 183, 125, 0.2)"
+        }}
+      >
+        {/* Check icon in top right corner */}
+        <motion.div
+          className="absolute -top-2 -right-2 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center shadow-lg"
+          style={{
+            background: "linear-gradient(135deg, #D4B77D 0%, #B8965F 100%)",
+            border: "3px solid rgba(255, 255, 255, 0.9)"
+          }}
+          initial={{ scale: 0, rotate: -180 }}
+          animate={isInView ? { scale: 1, rotate: 0 } : {}}
+          transition={{
+            duration: 0.6,
+            delay: 0.2 + index * 0.15,
+            type: "spring",
+            bounce: 0.6
+          }}
+          whileHover={{ rotate: 360, scale: 1.2 }}
         >
-          <Icon className="w-6 h-6" style={{ color }} />
+          <CheckCircle2 className="w-5 h-5 md:w-6 md:h-6 text-white" strokeWidth={3} fill="currentColor" />
+        </motion.div>
+
+        {/* Corner decoration */}
+        <motion.div
+          className="absolute top-0 right-0 w-24 h-24 opacity-20"
+          style={{
+            background: "radial-gradient(circle at top right, rgba(212, 183, 125, 0.4) 0%, transparent 70%)"
+          }}
+          initial={{ opacity: 0, scale: 0 }}
+          animate={isInView ? { opacity: 0.2, scale: 1 } : {}}
+          transition={{ duration: 1, delay: 0.3 + index * 0.15 }}
+        />
+
+        {/* Animated gradient overlay on hover */}
+        <motion.div
+          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+          style={{
+            background: "radial-gradient(circle at 50% 50%, rgba(212, 183, 125, 0.15) 0%, transparent 70%)"
+          }}
+        />
+
+        <div className="flex items-start gap-4 relative z-10">
+          {/* Icon container with glow */}
+          <motion.div
+            className="flex-shrink-0 w-14 h-14 md:w-16 md:h-16 rounded-xl flex items-center justify-center relative"
+            style={{
+              background: "rgba(212, 183, 125, 0.2)",
+              border: "2px solid rgba(212, 183, 125, 0.5)"
+            }}
+            whileHover={{
+              rotate: [0, -8, 8, -8, 8, 0],
+              scale: 1.1,
+              borderColor: "#D4B77D"
+            }}
+            transition={{ duration: 0.6 }}
+          >
+            {/* Icon glow effect */}
+            <motion.div
+              className="absolute inset-0 rounded-xl"
+              style={{
+                background: "rgba(212, 183, 125, 0.4)",
+                filter: "blur(8px)"
+              }}
+              animate={{
+                scale: [1, 1.3, 1],
+                opacity: [0.3, 0.6, 0.3]
+              }}
+              transition={{
+                duration: 2.5,
+                repeat: Infinity,
+                delay: index * 0.3
+              }}
+            />
+            <Icon className="w-7 h-7 md:w-8 md:h-8 relative z-10" style={{ color }} />
+          </motion.div>
+
+          <div className="flex-1">
+            <h3 className="text-lg md:text-xl font-bold mb-2" style={{ color: "#D4B77D" }}>
+              {title}
+            </h3>
+            <p className="leading-relaxed" style={{ color: "rgba(245, 247, 250, 0.85)" }}>
+              {description}
+            </p>
+          </div>
         </div>
-        <div>
-          <h3 className="text-xl font-bold text-emerald-300 mb-2">{title}</h3>
-          <p className="text-gray-200 leading-relaxed">{description}</p>
-        </div>
+
+        {/* Animated bottom accent */}
+        <motion.div
+          className="absolute bottom-0 left-0 right-0 h-1 rounded-b-2xl"
+          style={{
+            background: "linear-gradient(90deg, transparent 0%, #D4B77D 50%, transparent 100%)"
+          }}
+          initial={{ scaleX: 0, opacity: 0 }}
+          animate={isInView ? { scaleX: 1, opacity: 1 } : {}}
+          transition={{ duration: 0.6, delay: 0.5 + index * 0.1 }}
+        />
       </div>
-    </div>
+    </motion.div>
   );
 };
 
@@ -184,145 +380,203 @@ const ProblemSolutionSection = () => {
           <motion.div
             initial={{ opacity: 0, y: -30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, amount: 0.3 }}
+            viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.8 }}
-            className="text-center mb-16"
+            className="text-center mb-16 md:mb-20"
           >
             <h2
-              className="text-4xl md:text-5xl font-extrabold mb-6"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4"
               style={{ color: "#F5F7FA" }}
             >
               ¿Por Qué No Has Logrado{" "}
               <span style={{ color: "#D4B77D" }}>Hablar Inglés</span>?
             </h2>
             <p
-              className="text-lg md:text-xl max-w-3xl mx-auto"
-              style={{ color: "rgba(245, 247, 250, 0.9)" }}
+              className="text-base md:text-lg lg:text-xl max-w-3xl mx-auto leading-relaxed"
+              style={{ color: "rgba(245, 247, 250, 0.8)" }}
             >
               Identificamos tu problema real y te damos la solución definitiva
             </p>
           </motion.div>
 
-          <div className="grid lg:grid-cols-2 gap-12 items-start">
+          <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-start">
             {/* Problemas Column */}
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: false, amount: 0.3 }}
-            >
-              <div className="mb-8 text-center lg:text-left">
-                <div className="inline-flex items-center gap-3 bg-red-900/30 px-6 py-3 rounded-full border border-red-800/60 mb-6 backdrop-blur-sm">
-                  <AlertCircle className="w-5 h-5 text-red-400" />
-                  <span className="text-red-300 font-semibold text-lg">
+            <div>
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.7 }}
+                className="mb-8 text-center lg:text-left"
+              >
+                <motion.div
+                  className="inline-flex items-center gap-3 px-6 py-3 rounded-full border mb-6 backdrop-blur-sm shadow-lg"
+                  style={{
+                    backgroundColor: 'rgba(239, 68, 68, 0.2)',
+                    borderColor: 'rgba(239, 68, 68, 0.5)'
+                  }}
+                  whileHover={{ scale: 1.05 }}
+                >
+                  <X className="w-5 h-5 text-red-400" strokeWidth={3} />
+                  <span className="text-red-300 font-bold text-lg">
                     El Problema
                   </span>
-                </div>
-                <h3 className="text-2xl md:text-3xl font-bold text-red-200 mb-4">
+                </motion.div>
+                <h3 className="text-2xl md:text-3xl font-extrabold mb-2" style={{ color: "#FCA5A5" }}>
                   Métodos que NO funcionan
                 </h3>
-              </div>
+                <p className="text-base" style={{ color: "rgba(245, 247, 250, 0.7)" }}>
+                  Estas son las barreras que te detienen
+                </p>
+              </motion.div>
 
-              <div className="space-y-6">
+              <div className="space-y-5 md:space-y-6">
                 {problems.map((problem, idx) => (
-                  <motion.div key={idx} variants={itemVariants}>
-                    <ProblemCard {...problem} />
-                  </motion.div>
+                  <ProblemCard key={idx} {...problem} index={idx} />
                 ))}
               </div>
-            </motion.div>
+            </div>
 
             {/* Soluciones Column */}
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: false, amount: 0.3 }}
-            >
-              <div className="mb-8 text-center lg:text-left">
-                <div
-                  className="inline-flex items-center gap-3 px-6 py-3 rounded-full border mb-6 backdrop-blur-sm"
+            <div>
+              <motion.div
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.7 }}
+                className="mb-8 text-center lg:text-left"
+              >
+                <motion.div
+                  className="inline-flex items-center gap-3 px-6 py-3 rounded-full border mb-6 backdrop-blur-sm shadow-lg"
                   style={{
-                    backgroundColor: 'rgba(212, 183, 125, 0.15)',
-                    borderColor: 'rgba(212, 183, 125, 0.4)'
+                    backgroundColor: 'rgba(212, 183, 125, 0.2)',
+                    borderColor: 'rgba(212, 183, 125, 0.5)'
                   }}
+                  whileHover={{ scale: 1.05 }}
                 >
-                  <TrendingUp className="w-5 h-5" style={{ color: "#D4B77D" }} />
-                  <span className="font-semibold text-lg" style={{ color: "#D4B77D" }}>
+                  <Sparkles className="w-5 h-5" style={{ color: "#D4B77D" }} />
+                  <span className="font-bold text-lg" style={{ color: "#D4B77D" }}>
                     La Solución
                   </span>
-                </div>
-                <h3 className="text-2xl md:text-3xl font-bold text-emerald-200 mb-4">
+                </motion.div>
+                <h3 className="text-2xl md:text-3xl font-extrabold mb-2" style={{ color: "#D4B77D" }}>
                   Nuestro Método Comprobado
                 </h3>
-              </div>
+                <p className="text-base" style={{ color: "rgba(245, 247, 250, 0.7)" }}>
+                  Así transformamos tu inglés
+                </p>
+              </motion.div>
 
-              <div className="space-y-6">
+              <div className="space-y-5 md:space-y-6">
                 {solutions.map((solution, idx) => (
-                  <motion.div key={idx} variants={solutionVariants}>
-                    <SolutionCard {...solution} />
-                  </motion.div>
+                  <SolutionCard key={idx} {...solution} index={idx} />
                 ))}
               </div>
-
-              {/* CTA Badge */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: false, amount: 0.3 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-                className="mt-8 text-center lg:text-left"
-              >
-                <div
-                  className="inline-block px-8 py-4 rounded-2xl border-2 backdrop-blur-sm"
-                  style={{
-                    backgroundColor: 'rgba(212, 183, 125, 0.15)',
-                    borderColor: '#D4B77D'
-                  }}
-                >
-                  <p className="text-lg font-bold mb-1" style={{ color: "#D4B77D" }}>
-                    ✨ Garantía de Resultados
-                  </p>
-                  <p className="text-sm" style={{ color: "rgba(245, 247, 250, 0.9)" }}>
-                    O te devolvemos tu inversión
-                  </p>
-                </div>
-              </motion.div>
-            </motion.div>
+            </div>
           </div>
 
           {/* Bottom Stats */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, amount: 0.3 }}
+            viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="grid sm:grid-cols-3 gap-8 mt-20 text-center"
+            className="grid sm:grid-cols-3 gap-6 md:gap-8 mt-16 md:mt-20"
           >
-            <div className="backdrop-blur-sm bg-white/5 rounded-2xl p-6">
-              <p className="text-4xl md:text-5xl font-bold mb-2" style={{ color: "#D4B77D" }}>
-                87%
-              </p>
-              <p className="text-gray-200">
-                De estudiantes logran conversación fluida en 3 meses
-              </p>
-            </div>
-            <div className="backdrop-blur-sm bg-white/5 rounded-2xl p-6">
-              <p className="text-4xl md:text-5xl font-bold mb-2" style={{ color: "#D4B77D" }}>
-                +500
-              </p>
-              <p className="text-gray-200">
-                Profesionales ya hablan inglés con confianza
-              </p>
-            </div>
-            <div className="backdrop-blur-sm bg-white/5 rounded-2xl p-6">
-              <p className="text-4xl md:text-5xl font-bold mb-2" style={{ color: "#D4B77D" }}>
-                100%
-              </p>
-              <p className="text-gray-200">
-                Profesores nativos certificados
-              </p>
-            </div>
+            {[
+              { number: "87%", text: "De estudiantes logran conversación fluida en 3 meses", delay: 0 },
+              { number: "+500", text: "Profesionales ya hablan inglés con confianza", delay: 0.1 },
+              { number: "100%", text: "Profesores nativos certificados", delay: 0.2 }
+            ].map((stat, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{
+                  duration: 0.7,
+                  delay: stat.delay,
+                  type: "spring",
+                  stiffness: 100
+                }}
+                whileHover={{ y: -8, scale: 1.05 }}
+                className="relative group cursor-pointer"
+              >
+                <div
+                  className="relative backdrop-blur-md rounded-2xl p-6 md:p-8 text-center overflow-hidden"
+                  style={{
+                    background: "linear-gradient(135deg, rgba(212, 183, 125, 0.15) 0%, rgba(184, 150, 95, 0.1) 100%)",
+                    border: "2px solid rgba(212, 183, 125, 0.4)",
+                    boxShadow: "0 10px 40px rgba(212, 183, 125, 0.2)"
+                  }}
+                >
+                  {/* Corner decoration */}
+                  <motion.div
+                    className="absolute top-0 right-0 w-20 h-20 opacity-20"
+                    style={{
+                      background: "radial-gradient(circle at top right, rgba(212, 183, 125, 0.4) 0%, transparent 70%)"
+                    }}
+                  />
+
+                  {/* Animated gradient overlay on hover */}
+                  <motion.div
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                    style={{
+                      background: "radial-gradient(circle at 50% 50%, rgba(212, 183, 125, 0.1) 0%, transparent 70%)"
+                    }}
+                  />
+
+                  <div className="relative z-10">
+                    {/* Number with glow */}
+                    <motion.div className="relative inline-block mb-3">
+                      <motion.div
+                        className="absolute inset-0 rounded-2xl"
+                        style={{
+                          background: "radial-gradient(circle, rgba(212, 183, 125, 0.3) 0%, transparent 70%)",
+                          filter: "blur(15px)"
+                        }}
+                        animate={{
+                          scale: [1, 1.2, 1],
+                          opacity: [0.4, 0.7, 0.4]
+                        }}
+                        transition={{
+                          duration: 2.5,
+                          repeat: Infinity,
+                          delay: idx * 0.3
+                        }}
+                      />
+                      <p
+                        className="text-5xl md:text-6xl font-black relative z-10"
+                        style={{
+                          background: "linear-gradient(135deg, #D4B77D 0%, #F5F7FA 100%)",
+                          WebkitBackgroundClip: "text",
+                          WebkitTextFillColor: "transparent",
+                          backgroundClip: "text"
+                        }}
+                      >
+                        {stat.number}
+                      </p>
+                    </motion.div>
+
+                    <p className="text-sm md:text-base leading-relaxed font-medium" style={{ color: "rgba(245, 247, 250, 0.9)" }}>
+                      {stat.text}
+                    </p>
+                  </div>
+
+                  {/* Animated bottom accent */}
+                  <motion.div
+                    className="absolute bottom-0 left-0 right-0 h-1 rounded-b-2xl"
+                    style={{
+                      background: "linear-gradient(90deg, transparent 0%, #D4B77D 50%, transparent 100%)"
+                    }}
+                    initial={{ scaleX: 0 }}
+                    whileInView={{ scaleX: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8, delay: 0.5 + idx * 0.1 }}
+                  />
+                </div>
+              </motion.div>
+            ))}
           </motion.div>
         </div>
       </section>
